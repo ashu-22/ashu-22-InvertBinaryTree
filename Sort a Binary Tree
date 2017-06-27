@@ -1,0 +1,76 @@
+private class Node Comparable<Node>
+{
+    public Node R;
+    public Node L;
+    public int value;
+
+    public Node (Node L, int val, Node R)
+    {
+        this.L = L;
+        this.value = val;
+        this.R = R;
+    }
+
+    @Override
+    public int compareTo(Node other)
+    {
+        return ((other != null) ? (this.value-other.value) : 0);
+    }
+}
+
+class Main
+{
+    private static Node head;
+
+    private static void recursive_collect (Node n, ArrayList<Node> list)
+    {
+        if (n == null) return;
+        if (n.left != null) recursive_collect (n.L, list);
+        if (n.right != null) recursive_collect (n.R, list);
+        list.add(n.value);
+    }
+
+    public static ArrayList<Node> collect ()
+    {
+        ArrayList<Node> list = new ArrayList<Node>();
+        recursive_collect (head, list);
+        return list;
+    }
+
+    // sorting the tree: O(n log n + n)
+    public static ArrayList<Node> sortTree ()
+    {
+        // Collecting nodes: O(n)
+        ArrayList<Node> list = collect();
+
+        // Merge Sort: O(n log n)
+        Collections.sort(list);
+
+        return list;
+    }
+
+    // The example in the picture you provided
+    public static void createTestTree ()
+    {
+        Node left1 = new Node (new Node(null,-2,null), -1, new Node(null,0,null));
+
+        Node left2 = new Node (new Node(null,-1,null), 0, new Node(null,1,null));
+
+        Node right = new Node (left2, 1, new Node(null,2,null));
+
+        head = new Node (left1, 0, right);
+    }
+
+    // test
+    public static void main(String [] args)
+    {
+        createTestTree ();
+
+        ArrayList<Node> list = sortTree ();
+
+        for (Node n : list)
+        {
+            System.out.println(n.value);
+        }
+    }
+}
